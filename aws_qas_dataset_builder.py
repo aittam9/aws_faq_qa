@@ -3,6 +3,8 @@ from bs4 import BeautifulSoup
 import re
 from tqdm import tqdm
 import json
+import pandas as pd
+import os
 
 URL_ORIGIN = "https://aws.amazon.com/it/certification/certified-machine-learning-specialty/"
 
@@ -82,16 +84,34 @@ def compute_stats(all_qas):
     
     print(f"\nFor a total of {count} question-answer pair.")
 
+#TODO create a json builder
 def build_json(all_qas):
-    #TODO create a json builder
+    
     pass
+#TODO create a csv builder
+def build_csv(all_qas):
+    data_dir = "./Data"
+    
+    print("Building CSV...")
+    df = pd.DataFrame(all_qas)
+    
+    #check if data dir exists, if not create it
+    if not os.path.exists(data_dir):
+        os.mkdir(data_dir)
+    #save the csv
+    df.to_csv(data_dir+"/aws_qas.csv", sep = "\t")
+    print("...CSV done!")
+    return df
 
 def main():
     print(f"Scraping pages from {URL_ORIGIN}")
     URLS = collect_urls(URL_ORIGIN)
+    
     all_qas = all_qas_collector(URLS)
     compute_stats(all_qas)
 
+    df = build_csv(all_qas)
+    print(df.head())
 
 if __name__ == "__main__":
     main()
