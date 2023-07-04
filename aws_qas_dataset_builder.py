@@ -101,6 +101,7 @@ def build_csv(all_qas):
     #save the csv
     df.to_csv(data_dir+"/aws_qas.csv", sep = "\t")
     print("...CSV done!")
+    print(df.head())
     return df
 
 def main():
@@ -111,7 +112,7 @@ def main():
     compute_stats(all_qas)
 
     df = build_csv(all_qas)
-    print(df.head())
+    
 
 if __name__ == "__main__":
     main()
